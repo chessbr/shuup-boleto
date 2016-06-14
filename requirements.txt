@@ -1,0 +1,2 @@
+# version 1.0.0 of python boleto
+-e git+https://github.com/rockho-team/python-boleto.git@master#egg=python-boleto
