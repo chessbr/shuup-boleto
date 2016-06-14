@@ -1,0 +1,50 @@
+<dl class="dl-horizontal">
+    {% if boleto %}
+    <dt>{% trans %}Sequencial{% endtrans %}</dt>
+    <dd>{{ boleto.num_sequencial }}</dd>
+    
+    <dt>{% trans %}Nosso n&uacute;mero{% endtrans %}</dt>
+    <dd>{{ boleto.nosso_numero }}</dd>
+
+    <dt>{% trans %}Banco{% endtrans %}</dt>
+    <dd>{{ boleto.bank_service }}</dd>
+
+    <dt>{% trans %}Vencimento{% endtrans %}</dt>
+    <dd>{{ boleto.due_date|date }}</dd>
+
+    <dt>{% trans %}Linha digit&aacute;vel{% endtrans %}</dt>
+    <dd>{{ boleto.number_line }}</dd>
+    
+    <dt>{% trans %}Valor total{% endtrans %}</dt>
+    <dd>{{ boleto.total|money }}</dd>
+
+    <dt>{% trans %}Data do pagamento{% endtrans %}</dt>
+    <dd>{% if boleto.payment_date %}{{ boleto.payment_date|datetime }}{% endif %}</dd>
+
+    <dt>{% trans %}Valor pago{% endtrans %}</dt>
+    <dd>{% if boleto.payment_amount %}{{ boleto.payment_amount|money }}{% endif %}</dd>
+    
+    <dt>{% trans %}Situação{% endtrans %}</dt>
+    <dd>
+        {% if boleto.status.value == 0 %}
+        <span class="text-primary">
+        {% elif boleto.status.value == 1 %}
+        <span class="text-success">
+        {% elif boleto.status.value == 2 %}
+        <span class="text-danger">
+        {% else %}
+        <span>
+        {% endif %}
+        {{ boleto.status }}</span>
+    </dd>
+
+    <dd>
+        {% if boleto.status.value == 0 %}
+        <button class="btn btn-success" onclick="pay();" type="button"><i class="fa fa-thumbs-up"></i> {% trans %}Pagamento identificado{% endtrans %}</button>    
+        <button class="btn btn-danger" onclick="cancel();" type="button"><i class="fa fa-thumbs-down"></i> {% trans %}Cancelar{% endtrans %}</button>
+        {% else %}
+        <button class="btn btn-warning" onclick="reset();" type="button"><i class="fa fa-fire-extinguisher"></i> {% trans %}Limpar{% endtrans %}</button>
+        {% endif %}
+    </dd>
+    {% endif %}
+</dl>

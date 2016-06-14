@@ -1,0 +1,49 @@
+<script>
+    function pay(){
+        $.ajax({
+            type: "POST",
+            url: "{{ url('shoop_admin:boleto.pay-boleto', pk=order.pk) }}",
+            data: {
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            success: function(data){
+                location.reload(true);
+            },
+            error: function(){
+                alert("{% trans %}Ocorreu um erro ao confirmar pagamento do boleto.{% endtrans %}")
+            }
+        });
+    }
+
+    function cancel(){
+        $.ajax({
+            type: "POST",
+            url: "{{ url('shoop_admin:boleto.cancel-boleto', pk=order.pk) }}",
+            data: {
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            success: function(data){
+                location.reload(true);
+            },
+            error: function(){
+                alert("{% trans %}Ocorreu um erro ao cancelar boleto.{% endtrans %}")
+            }
+        });
+    }
+    
+    function reset(){
+        $.ajax({
+            type: "POST",
+            url: "{{ url('shoop_admin:boleto.reset-boleto', pk=order.pk) }}",
+            data: {
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+            },
+            success: function(data){
+                location.reload(true);
+            },
+            error: function(){
+                alert("{% trans %}Ocorreu um erro ao resetar boleto.{% endtrans %}")
+            }
+        });
+    }
+</script>
