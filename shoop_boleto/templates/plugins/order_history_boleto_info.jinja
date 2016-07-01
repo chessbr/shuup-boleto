@@ -15,7 +15,7 @@
             <dd>{{ order.boleto.number_line }}</dd>
 
             <dt>{% trans %}Situa&ccedil;&atilde;o{% endtrans %}</dt>
-            {% if order.boleto.payment_date %}}
+            {% if order.boleto.payment_date %}
             <dd>{% trans payment_date=order.boleto.payment_date|date %}Pago em: {{ payment_date }}{% endtrans %}</dd>
             {% else %}
             <dd>{% trans %}Aguardando pagamento{% endtrans %}</dd>
