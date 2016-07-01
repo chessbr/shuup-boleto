@@ -1,0 +1,34 @@
+{% if order and order.boleto %}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2 class="panel-title">{% trans %}Informa&ccedil;&otilde;es do boleto banc&aacute;rio{% endtrans %}</h2>
+    </div>
+
+    <div class="panel-body">
+
+        <dl class="dl-horizontal">
+            <dt>{% trans %}Vencimento{% endtrans %}</dt>
+            <dd>{{ order.boleto.due_date|date }}</dd>
+
+            <dt>{% trans %}Linha digit&aacute;vel{% endtrans %}</dt>
+            <dd>{{ order.boleto.number_line }}</dd>
+
+            <dt>{% trans %}Situa&ccedil;&atilde;o{% endtrans %}</dt>
+            {% if order.boleto.payment_date %}}
+            <dd>{% trans payment_date=order.boleto.payment_date|date %}Pago em: {{ payment_date }}{% endtrans %}</dd>
+            {% else %}
+            <dd>{% trans %}Aguardando pagamento{% endtrans %}</dd>
+            {% endif %}
+
+            <dt>{% trans %}Valor{% endtrans %}</dt>
+            <dd>{{ order.boleto.total|money }}</dd>
+        </dl>
+
+        <div class="text-center">
+            <a class="btn btn-primary btn-lg" href="{{ url('shoop:view_boleto', order_pk=order.pk, order_key=order.key) }}" target="_blank"><i class="fa fa-barcode"></i> {% trans %}Visualizar o boleto banc&aacute;rio{% endtrans %}</a>
+        </div>
+    </div>
+</div>
+
+{% endif %}

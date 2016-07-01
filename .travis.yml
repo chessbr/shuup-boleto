@@ -1,0 +1,14 @@
+language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+install:
+  - pip install -U pip
+  - pip install coveralls
+  - pip install -e git+https://github.com/shuup/shuup.git@v4.0.0#egg=shoop[everything]
+  - pip install -e .
+  - pip install -r requirements.txt
+script:
+  - py.test -ra -vvv --cov-config .coveragerc --cov shoop_boleto shoop_boleto_tests
+after_success: coveralls
