@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# This file is part of Shoop Boleto.
+# This file is part of Shuup Boleto.
 #
 # Copyright (c) 2016, Rockho Team. All rights reserved.
 # Author: Christian Hess
@@ -15,28 +15,28 @@ import setuptools
     Babel integration: http://babel.pocoo.org/en/stable/setup.html
 
     - Extract messages:
-        `python setup.py extract_messages -D django --output-file shoop_boleto/locale/django.pot`
+        `python setup.py extract_messages -D django --output-file shuup_boleto/locale/django.pot`
 
     - Update an existing catalog (language):
-        `python setup.py -D django update_catalog -l pt_BR -i shoop_boleto/locale/django.pot -d shoop_boleto/locale`
+        `python setup.py -D django update_catalog -l pt_BR -i shuup_boleto/locale/django.pot -d shuup_boleto/locale`
 
     - Compile catalog:
-        `python setup.py compile_catalog -D django -d shoop_boleto/locale -l pt_BR`
+        `python setup.py compile_catalog -D django -d shuup_boleto/locale -l pt_BR`
 
     - Create a new catalog (language):
-        `python setup.py init_catalog -D django -l pt_BR -i shoop_boleto/locale/django.pot -d shoop_boleto/locale`
+        `python setup.py init_catalog -D django -l pt_BR -i shuup_boleto/locale/django.pot -d shuup_boleto/locale`
 """
 
-NAME = 'shoop-boleto'
+NAME = 'shuup-boleto'
 VERSION = '1.0.0'
-DESCRIPTION = 'Boleto payment add-on for Shoop'
+DESCRIPTION = 'Boleto payment add-on for Shuup'
 AUTHOR = 'Rockho Team'
 AUTHOR_EMAIL = 'rockho@rockho.com.br'
 URL = 'http://www.rockho.com.br/'
 LICENSE = 'AGPL-3.0'
 
 EXCLUDED_PACKAGES = [
-    'shoop_boleto_tests', 'shoop_boleto_tests.*',
+    'shuup_boleto_tests', 'shuup_boleto_tests.*',
 ]
 
 REQUIRES = [
@@ -51,16 +51,16 @@ if __name__ == '__main__':
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         license=LICENSE,
-        packages=["shoop_boleto"],
+        packages=["shuup_boleto"],
         include_package_data=True,
         install_requires=REQUIRES,
-        entry_points={"shoop.addon": "shoop_boleto=shoop_boleto"},
+        entry_points={"shuup.addon": "shuup_boleto=shuup_boleto"},
         cmdclass={'compile_catalog': babel.compile_catalog,
                   'extract_messages': babel.extract_messages,
                   'init_catalog': babel.init_catalog,
                   'update_catalog': babel.update_catalog},
         message_extractors={
-            'shoop_boleto': [
+            'shuup_boleto': [
                 ('**.py', 'python', None),
                 ('**/templates/**.html', 'jinja2', None),
                 ('**/templates/**.jinja', 'jinja2', None)
