@@ -21,7 +21,7 @@ class BoletoGeneratorCheckoutPlugin(TemplatedPlugin):
     Plugin para exibir botão para gerar o boleto do pedido
     """
     identifier = "shuup_boleto.checkout_boleto_generator"
-    name = _("Link para visualizar boleto bancário na finalização do pedido")
+    name = _(u"Link para visualizar boleto bancário na finalização do pedido")
     template_name = "plugins/checkout_boleto_generator.jinja"
 
     def get_context_data(self, context):
@@ -54,7 +54,7 @@ class BoletoInfoOrderHistoryPlugin(TemplatedPlugin):
     Plugin para exibir dados do boleto no histório do pedido
     """
     identifier = "shuup_boleto.order_history_boleto_info"
-    name = _("Informações do boleto bancário no histórico de pedido")
+    name = _(u"Informações do boleto bancário no histórico de pedido")
     template_name = "plugins/order_history_boleto_info.jinja"
 
     def get_context_data(self, context):
