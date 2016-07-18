@@ -210,6 +210,7 @@ class CecredBoletoBehaviorComponent(ServiceBehaviorComponent, BoletoBehaviorComp
             try:
                 boleto_cecred.validate()
             except Exception as exc:
+                logger.exception("O boleto gerado não é valido: {0}".format(exc))
                 order.add_log_entry((_("O boleto gerado não é válido: {0}")).format(str(exc)), kind=LogEntryKind.ERROR)
 
             return stored_boleto
