@@ -204,6 +204,7 @@ class CecredBoletoBehaviorComponent(ServiceBehaviorComponent, BoletoBehaviorComp
             stored_boleto.bar_code = boleto_cecred.codigo_barras
             stored_boleto.nosso_numero = boleto_cecred.nosso_numero
             stored_boleto.info = boleto_cecred.__dict__
+            stored_boleto.full_clean()
             stored_boleto.save(update_fields=['nosso_numero', 'number_line', 'bar_code', 'info'])
 
             try:
@@ -277,8 +278,11 @@ class StoredBoleto(models.Model):
                               blank=True)
     bank_service = EnumField(BankService, verbose_name=_('Serviço'))
     due_date = models.DateField(verbose_name=_('Data do vencimento'))
-    number_line = models.CharField(verbose_name=_('Linha digitável'), max_length=50, null=True)
-    bar_code = models.CharField(verbose_name=_('Código de barras'), max_length=50, null=True)
+    number_line = models.CharField(verbose_name=_('Linha digitável'),
+                                   max_length=54,
+                                   null=True,
+                                   help_text=_("Linha digitável formatada (54 caracteres)"))
+    bar_code = models.CharField(verbose_name=_('Código de barras'), max_length=44, null=True)
     nosso_numero = models.CharField(verbose_name=_('Nosso número'), max_length=50, null=True)
     info = JSONField(verbose_name=_('Informações do boleto'), null=True)
 
