@@ -6,7 +6,7 @@
 #
 # This source code is licensed under the AGPLv3 license found in the
 # LICENSE file in the root directory of this source tree.
-
+from __future__ import unicode_literals
 import logging
 
 from shuup_boleto.models import StoredBoleto
@@ -27,5 +27,5 @@ class BoletoVisualizationView(object):
             return HttpResponse(boleto.html)
 
         except:
-            logger.exception(u"Erro ao visualizar boleto do pedido {0}".format(order_pk))
-            return HttpResponseServerError(_(u"Erro ao gerar boleto ou documento não encontrado."))
+            logger.exception("Erro ao visualizar boleto do pedido {0}".format(order_pk))
+            return HttpResponseServerError(_("Erro ao gerar boleto ou documento não encontrado."))

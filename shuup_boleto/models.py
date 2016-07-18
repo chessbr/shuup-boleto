@@ -35,31 +35,31 @@ logger = logging.getLogger(__name__)
 class BoletoBehaviorComponentMixin(models.Model):
     bank_service = None
 
-    num_sequencial = models.BigIntegerField(verbose_name=_(u'Número sequencial do próximo boleto'),
-                                            help_text=_(u'Este número será utilizado caso ele seja maior do que o último armazenado. '
+    num_sequencial = models.BigIntegerField(verbose_name=_('Número sequencial do próximo boleto'),
+                                            help_text=_('Este número será utilizado caso ele seja maior do que o último armazenado. '
                                                         'Se ele for menor, este será desconsiderado. CUIDADO: apenas informe este campo '
                                                         'se você sabe o que está fazendo. O objetivo é ajustar o número sequencial '
                                                         'inicial caso boletos já tenham sido emitidos anteriormente através de outro software.'),
                                             default=1)
 
-    local_pagamento = models.TextField(verbose_name=_(u'Local de pagamento'),
+    local_pagamento = models.TextField(verbose_name=_('Local de pagamento'),
                                        max_length=60)
 
-    cedente = models.TextField(verbose_name=_(u'Nome do cedente'),
+    cedente = models.TextField(verbose_name=_('Nome do cedente'),
                                max_length=60,
-                               help_text=_(u'É o emissor do título'))
+                               help_text=_('É o emissor do título'))
 
-    prazo_vencimento = models.PositiveSmallIntegerField(verbose_name=_(u'Prazo para o vencimento do boleto'),
+    prazo_vencimento = models.PositiveSmallIntegerField(verbose_name=_('Prazo para o vencimento do boleto'),
                                                         default=5,
-                                                        help_text=_(u'Quantidade de dias que será adicionado a '
+                                                        help_text=_('Quantidade de dias que será adicionado a '
                                                                     'data do pedido para atribuir como vencimento do boleto.'))
 
-    instrucoes = models.TextField(verbose_name=_(u'Instruções'),
+    instrucoes = models.TextField(verbose_name=_('Instruções'),
                                   max_length=60, blank=True, null=True,
-                                  help_text=_(u'Máximo de 8 linhas com 50 caracteres cada.'))
+                                  help_text=_('Máximo de 8 linhas com 50 caracteres cada.'))
 
     especie_doc = EnumIntegerField(DocumentType,
-                                   verbose_name=_(u'Espécie do documento'),
+                                   verbose_name=_('Espécie do documento'),
                                    default=DocumentType.DM)
 
     class Meta:
@@ -162,20 +162,20 @@ class CecredBoletoBehaviorComponent(ServiceBehaviorComponent, BoletoBehaviorComp
     name = _("Boleto: Configuração 085-CECRED")
     help_text = _("Configurações do boleto do banco CECRED")
 
-    layout = models.CharField(_(u"Layout"),
+    layout = models.CharField(_("Layout"),
                               max_length=5,
                               choices=CECRED_LAYOUT_CHOICES)
 
-    agencia = models.CharField(verbose_name=_(u'Número da agência'),
+    agencia = models.CharField(verbose_name=_('Número da agência'),
                                max_length=6,
-                               help_text=_(u'Apenas números com o dígito verificador, ex: 01010'))
+                               help_text=_('Apenas números com o dígito verificador, ex: 01010'))
 
-    conta = models.CharField(verbose_name=_(u'Número da conta'),
+    conta = models.CharField(verbose_name=_('Número da conta'),
                              max_length=15,
-                             help_text=_(u'Apenas números com o dígito verificador, ex: 1234568'))
+                             help_text=_('Apenas números com o dígito verificador, ex: 1234568'))
 
-    convenio = models.CharField(verbose_name=_(u'Número do convênio'), max_length=6)
-    carteira = models.CharField(verbose_name=_(u'Número da carteira'), max_length=2)
+    convenio = models.CharField(verbose_name=_('Número do convênio'), max_length=6)
+    carteira = models.CharField(verbose_name=_('Número da carteira'), max_length=2)
 
     def get_context_data(self, service, order):
         boleto_data = super(CecredBoletoBehaviorComponent, self).get_context_data(service, order)
@@ -209,7 +209,7 @@ class CecredBoletoBehaviorComponent(ServiceBehaviorComponent, BoletoBehaviorComp
             try:
                 boleto_cecred.validate()
             except Exception as exc:
-                order.add_log_entry((_(u"O boleto gerado não é válido: {0}")).format(str(exc)), kind=LogEntryKind.ERROR)
+                order.add_log_entry((_("O boleto gerado não é válido: {0}")).format(str(exc)), kind=LogEntryKind.ERROR)
 
             return stored_boleto
 
@@ -239,7 +239,7 @@ class BoletoPaymentProcessor(PaymentProcessor):
         return service
 
     def get_effective_name(self, service, source):
-        return _(u"Boleto bancário")
+        return _("Boleto bancário")
 
     def process_payment_return_request(self, service, order, request):
         pass
@@ -257,11 +257,11 @@ class BoletoPaymentProcessor(PaymentProcessor):
                 order.payment_data["boleto_id"] = stored_boleto.pk
                 order.save()
 
-                order.add_log_entry(_(u"Boleto gerado por %s") % behavior_component, kind=LogEntryKind.NOTE)
+                order.add_log_entry(_("Boleto gerado por %s") % behavior_component, kind=LogEntryKind.NOTE)
 
         except Exception as exc:
-            logger.exception((_(u"Falha ao gerar boleto através da classe {0}: {1}").format(behavior_class, str(exc))))
-            order.add_log_entry((_(u"Falha ao gerar boleto através da classe {0}: {1}").format(behavior_class, str(exc))), kind=LogEntryKind.ERROR)
+            logger.exception((_("Falha ao gerar boleto através da classe {0}: {1}").format(behavior_class, str(exc))))
+            order.add_log_entry((_("Falha ao gerar boleto através da classe {0}: {1}").format(behavior_class, str(exc))), kind=LogEntryKind.ERROR)
 
         return HttpResponseRedirect(urls.return_url)
 
@@ -270,27 +270,27 @@ class StoredBoleto(models.Model):
     order = models.OneToOneField('shuup.Order',
                                  related_name='boleto',
                                  on_delete=models.CASCADE,
-                                 verbose_name=_(u'Pedido'))
+                                 verbose_name=_('Pedido'))
     status = EnumIntegerField(BoletoStatus,
-                              verbose_name=_(u'Situação'),
+                              verbose_name=_('Situação'),
                               default=BoletoStatus.Created,
                               blank=True)
-    bank_service = EnumField(BankService, verbose_name=_(u'Serviço'))
-    due_date = models.DateField(verbose_name=_(u'Data do vencimento'))
-    number_line = models.CharField(verbose_name=_(u'Linha digitável'), max_length=50, null=True)
-    bar_code = models.CharField(verbose_name=_(u'Código de barras'), max_length=50, null=True)
-    nosso_numero = models.CharField(verbose_name=_(u'Nosso número'), max_length=50, null=True)
-    info = JSONField(verbose_name=_(u'Informações do boleto'), null=True)
+    bank_service = EnumField(BankService, verbose_name=_('Serviço'))
+    due_date = models.DateField(verbose_name=_('Data do vencimento'))
+    number_line = models.CharField(verbose_name=_('Linha digitável'), max_length=50, null=True)
+    bar_code = models.CharField(verbose_name=_('Código de barras'), max_length=50, null=True)
+    nosso_numero = models.CharField(verbose_name=_('Nosso número'), max_length=50, null=True)
+    info = JSONField(verbose_name=_('Informações do boleto'), null=True)
 
     total = MoneyProperty('total_value', 'order.currency')
-    total_value = MoneyValueField(editable=False, verbose_name=_(u'Valor do Boleto'), default=0)
+    total_value = MoneyValueField(editable=False, verbose_name=_('Valor do Boleto'), default=0)
 
-    payment_date = models.DateTimeField(_(u'Data do pagamento'), null=True, blank=True)
+    payment_date = models.DateTimeField(_('Data do pagamento'), null=True, blank=True)
     payment_amount = MoneyProperty('payment_amount_value', 'order.currency')
-    payment_amount_value = MoneyValueField(editable=False, verbose_name=_(u'Valor pago'), default=0)
+    payment_amount_value = MoneyValueField(editable=False, verbose_name=_('Valor pago'), default=0)
 
     class Meta:
-        verbose_name = _(u'Boleto bancário')
+        verbose_name = _('Boleto bancário')
         verbose_name_plural = _('Boletos bancários')
 
     @property
@@ -310,11 +310,11 @@ class StoredBoleto(models.Model):
 
 
 class BoletoSequenceNumber(models.Model):
-    bank_service = EnumField(BankService, primary_key=True, verbose_name=_(u'Serviço'))
+    bank_service = EnumField(BankService, primary_key=True, verbose_name=_('Serviço'))
     last_number = models.BigIntegerField(default=0, validators=[MinValueValidator(1)])
 
     class Meta:
-        verbose_name = _(u'Número sequencial de boleto')
+        verbose_name = _('Número sequencial de boleto')
         verbose_name_plural = _('Números sequenciais de boleto')
 
 

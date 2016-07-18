@@ -6,7 +6,7 @@
 #
 # This source code is licensed under the AGPLv3 license found in the
 # LICENSE file in the root directory of this source tree.
-
+from __future__ import unicode_literals
 from enumfields import Enum
 
 from django.utils.translation import ugettext_lazy as _
@@ -29,9 +29,9 @@ class BoletoStatus(Enum):
     Expired = 2
 
     class Labels:
-        Created = _(u'Criado')
-        Paid = _(u'Pago')
-        Expired = _(u'Vencido')
+        Created = _('Criado')
+        Paid = _('Pago')
+        Expired = _('Vencido')
 
 
 class DocumentType(Enum):
@@ -41,7 +41,7 @@ class DocumentType(Enum):
     NF = 4
 
     class Labels:
-        DM = _(u'Duplicata Mercantil')
-        DS = _(u'Duplicata de Serviço')
-        RC = _(u'Recibo')
-        NF = _(u'Nota Fiscal')
+        DM = _('Duplicata Mercantil')
+        DS = _('Duplicata de Serviço')
+        RC = _('Recibo')
+        NF = _('Nota Fiscal')
