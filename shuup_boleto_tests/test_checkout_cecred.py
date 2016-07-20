@@ -140,7 +140,7 @@ def test_boleto_cecred_success():
         bcecred = CecredBoleto(**order.boleto.info)
         bcecred.validate()
         assert len(order.boleto.html) > 0
-        
+
         # "visualiza o boleto"
         view_boleto_path = reverse("shuup:view_boleto", kwargs={"order_pk": order.pk, "order_key": order.key})
         response = c.get(view_boleto_path)
@@ -348,25 +348,25 @@ def test_boleto_cecred_error2():
         confirm_soup = c.soup(confirm_path)
         response = c.post(confirm_path, data=extract_form_fields(confirm_soup))
         assert response.status_code == 302, "Confirm should redirect forth"
-    
+
         assert Order.objects.count() == 1
         order = Order.objects.filter(payment_method=payment_method).first()
         assert order.payment_status == PaymentStatus.NOT_PAID
-    
+
         process_payment_path = reverse("shuup:order_process_payment", kwargs={"pk": order.pk, "key": order.key})
         process_payment_return_path = reverse("shuup:order_process_payment_return",kwargs={"pk": order.pk, "key": order.key})
         order_complete_path = reverse("shuup:order_complete",kwargs={"pk": order.pk, "key": order.key})
-    
+
         assert response.url.endswith(process_payment_path), ("Confirm should have redirected to payment page")
-    
+
         response = c.get(process_payment_path)
         assert response.status_code == 302, "Payment page should redirect forth"
         assert response.url.endswith(process_payment_return_path)
-    
+
         response = c.get(process_payment_return_path)
         assert response.status_code == 302, "Payment return should redirect forth"
         assert response.url.endswith(order_complete_path)
-    
+
         order.refresh_from_db()
         assert order.payment_status == PaymentStatus.NOT_PAID
 
